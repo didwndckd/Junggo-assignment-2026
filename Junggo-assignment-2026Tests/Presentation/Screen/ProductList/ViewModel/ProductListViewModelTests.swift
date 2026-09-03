@@ -48,7 +48,7 @@ private extension ProductListViewModelTests {
         ProductListViewModel(
             router: router ?? Router(),
             repository: repository ?? MockProductListRepository(),
-            wishlistManager: wishlistManager ?? WishlistManager(repository: MockWishlistRepository())
+            wishlistManager: wishlistManager ?? MockWishlistManager()
         )
     }
 }

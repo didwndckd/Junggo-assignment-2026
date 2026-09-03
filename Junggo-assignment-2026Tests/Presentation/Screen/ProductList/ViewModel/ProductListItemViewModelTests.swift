@@ -16,7 +16,7 @@ struct ProductListItemViewModelTests {
 
     @Test("toggleWish는 이미 찜한 상품이면 찜 해제 상태로 전환한다")
     func toggleWishRemoves() async throws {
-        let wishlistManager = WishlistManager(repository: MockWishlistRepository(productIDs: [1]))
+        let wishlistManager = MockWishlistManager(wishlistIDs: [1])
         let sut = makeSUT(wishlistManager: wishlistManager)
 
         await sut.toggleWish()
@@ -25,21 +25,15 @@ struct ProductListItemViewModelTests {
     }
 
     @Test("이미 찜한 상품으로 생성되면 초기 isWished는 true다")
-    func initialWishedState() async throws {
-        let wishlistManager = WishlistManager(repository: MockWishlistRepository(productIDs: [1]))
-        let sut = makeSUT(wishlistManager: wishlistManager)
-
-        _ = await wishlistManager.wishlistIDsPublisher.values.first { $0 == [1] }
+    func initialWishedState() {
+        let sut = makeSUT(wishlistManager: MockWishlistManager(wishlistIDs: [1]))
 
         #expect(sut.isWished == true)
     }
 
     @Test("찜하지 않은 상품으로 생성되면 초기 isWished는 false다")
-    func initialNotWishedState() async throws {
-        let wishlistManager = WishlistManager(repository: MockWishlistRepository())
-        let sut = makeSUT(wishlistManager: wishlistManager)
-
-        _ = await wishlistManager.wishlistIDsPublisher.values.first { $0.isEmpty }
+    func initialNotWishedState() {
+        let sut = makeSUT(wishlistManager: MockWishlistManager())
 
         #expect(sut.isWished == false)
     }
@@ -63,7 +57,7 @@ private extension ProductListItemViewModelTests {
     ) -> ProductListItemViewModel {
         ProductListItemViewModel(
             router: router ?? Router(),
-            wishlistManager: wishlistManager ?? WishlistManager(repository: MockWishlistRepository()),
+            wishlistManager: wishlistManager ?? MockWishlistManager(),
             product: product ?? ProductFactory.make(id: 1)
         )
     }
