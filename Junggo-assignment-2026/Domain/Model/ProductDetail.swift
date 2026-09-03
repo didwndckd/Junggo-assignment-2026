@@ -43,6 +43,4 @@ struct ProductDetail: Hashable, Sendable {
     let meta: ProductMeta
     /// 상품 이미지 URL 목록
     let images: [URL]
-    /// 썸네일 이미지 URL
-    let thumbnail: URL
 }

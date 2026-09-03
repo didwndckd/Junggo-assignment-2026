@@ -70,13 +70,12 @@ extension ProductListEndpoint.ProductDTO: Decodable {
     func toDomain() -> Product? {
         guard let id else { return nil }
         guard let status = availabilityStatus?.toDomain() else { return nil }
-        guard let thumbnailURL = URL(string: thumbnail) else { return nil }
 
         return Product(
             id: id,
             title: title,
             price: ProductPrice(originalPrice: price, discountPercentage: discountPercentage),
-            thumbnail: thumbnailURL,
+            thumbnail: URL(string: thumbnail),
             rating: rating,
             availabilityStatus: status,
             brand: brand

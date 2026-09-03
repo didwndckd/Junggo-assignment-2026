@@ -33,7 +33,6 @@ extension ProductDetailEndpoint {
         let minimumOrderQuantity: Int
         let meta: MetaDTO
         let images: [String]
-        let thumbnail: String
     }
 }
 
@@ -60,7 +59,6 @@ extension ProductDetailEndpoint.ResponseData: Decodable {
         case minimumOrderQuantity
         case meta
         case images
-        case thumbnail
     }
 
     init(from decoder: Decoder) throws {
@@ -86,14 +84,12 @@ extension ProductDetailEndpoint.ResponseData: Decodable {
         self.minimumOrderQuantity = (try? container.decode(Int.self, forKey: .minimumOrderQuantity)) ?? 0
         self.meta = (try? container.decode(MetaDTO.self, forKey: .meta)) ?? MetaDTO(createdAt: "", updatedAt: "", barcode: "", qrCode: "")
         self.images = (try? container.decode([String].self, forKey: .images)) ?? []
-        self.thumbnail = (try? container.decode(String.self, forKey: .thumbnail)) ?? ""
     }
 
     func toDomain() -> ProductDetail? {
         guard let id else { return nil }
         guard let status = availabilityStatus?.toDomain() else { return nil }
         guard let domainMeta = meta.toDomain() else { return nil }
-        guard let thumbnailURL = URL(string: thumbnail) else { return nil }
 
         return ProductDetail(
             id: id,
@@ -115,8 +111,7 @@ extension ProductDetailEndpoint.ResponseData: Decodable {
             returnPolicy: returnPolicy,
             minimumOrderQuantity: minimumOrderQuantity,
             meta: domainMeta,
-            images: images.compactMap { URL(string: $0) },
-            thumbnail: thumbnailURL
+            images: images.compactMap { URL(string: $0) }
         )
     }
 }
