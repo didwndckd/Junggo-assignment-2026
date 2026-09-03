@@ -7,7 +7,7 @@ final class ProductDetailRepositoryImpl: ProductDetailRepository, Sendable {
         self.apiClient = apiClient
     }
 
-    func fetchProduct(id: Int) async throws -> Product {
+    func fetchProduct(id: Int) async throws -> ProductDetail {
         let response = try await apiClient.request(ProductDetailEndpoint(id: id))
         guard let product = response.data.toDomain() else {
             throw APIError.invalidData(response: response.response)
