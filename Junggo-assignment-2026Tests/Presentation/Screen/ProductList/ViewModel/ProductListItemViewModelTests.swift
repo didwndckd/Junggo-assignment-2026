@@ -4,7 +4,7 @@ import Testing
 import Combine
 
 @MainActor
-struct ProductListRowViewModelTests {
+struct ProductListItemViewModelTests {
     @Test("toggleWish는 찜하지 않은 상품이면 찜 상태로 전환한다")
     func toggleWishAdds() async throws {
         let sut = makeSUT()
@@ -55,13 +55,13 @@ struct ProductListRowViewModelTests {
     }
 }
 
-private extension ProductListRowViewModelTests {
+private extension ProductListItemViewModelTests {
     func makeSUT(
         router: Routable? = nil,
         wishlistManager: WishlistManaging? = nil,
         product: Product? = nil
-    ) -> ProductListRowViewModel {
-        ProductListRowViewModel(
+    ) -> ProductListItemViewModel {
+        ProductListItemViewModel(
             router: router ?? Router(),
             wishlistManager: wishlistManager ?? WishlistManager(repository: MockWishlistRepository()),
             product: product ?? ProductFactory.make(id: 1)

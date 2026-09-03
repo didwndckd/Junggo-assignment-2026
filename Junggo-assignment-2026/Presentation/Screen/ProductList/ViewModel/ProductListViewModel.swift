@@ -15,8 +15,8 @@ final class ProductListViewModel {
     private let wishlistManager: WishlistManaging
 
     private(set) var state = State.initial
-    private(set) var rows: [ProductListRowViewModel] = []
-    private var loadTask: Task<[ProductListRowViewModel], Error>?
+    private(set) var items: [ProductListItemViewModel] = []
+    private var loadTask: Task<[ProductListItemViewModel], Error>?
 
     init(router: Routable, repository: ProductListRepository, wishlistManager: WishlistManaging) {
         self.router = router
@@ -37,11 +37,11 @@ extension ProductListViewModel {
 
 // MARK: - Private
 private extension ProductListViewModel {
-    func createLoadTask() -> Task<[ProductListRowViewModel], Error> {
+    func createLoadTask() -> Task<[ProductListItemViewModel], Error> {
         Task {
             let products = try await repository.fetchProducts()
             return products.map {
-                ProductListRowViewModel(router: router, wishlistManager: wishlistManager, product: $0)
+                ProductListItemViewModel(router: router, wishlistManager: wishlistManager, product: $0)
             }
         }
     }
@@ -64,9 +64,9 @@ extension ProductListViewModel {
         loadTask = nil
 
         switch result {
-        case .success(let rows):
-            self.rows = rows
-            state = rows.isEmpty ? .empty : .loaded
+        case .success(let items):
+            self.items = items
+            state = items.isEmpty ? .empty : .loaded
         case .failure:
             state = .error
         }

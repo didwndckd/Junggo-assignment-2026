@@ -13,7 +13,7 @@ struct ProductListViewModelTests {
         await sut.load()
 
         #expect(sut.state == .loaded)
-        #expect(sut.rows.map(\.product.id) == [1, 2])
+        #expect(sut.items.map(\.product.id) == [1, 2])
     }
 
     @Test("load는 조회 결과가 비어있으면 state를 empty로 전환한다")
@@ -24,7 +24,7 @@ struct ProductListViewModelTests {
         await sut.load()
 
         #expect(sut.state == .empty)
-        #expect(sut.rows.isEmpty)
+        #expect(sut.items.isEmpty)
     }
 
     @Test("load는 조회에 실패하면 state를 error로 전환한다")
@@ -35,7 +35,7 @@ struct ProductListViewModelTests {
         await sut.load()
 
         #expect(sut.state == .error)
-        #expect(sut.rows.isEmpty)
+        #expect(sut.items.isEmpty)
     }
 }
 

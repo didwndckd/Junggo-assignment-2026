@@ -1,5 +1,5 @@
 //
-//  ProductListRowViewModel.swift
+//  ProductListItemViewModel.swift
 //  Junggo-assignment-2026
 //
 //  Created by yjc on 9/4/26.
@@ -10,7 +10,7 @@ import Foundation
 
 @MainActor
 @Observable
-final class ProductListRowViewModel {
+final class ProductListItemViewModel {
     private let router: Routable
     private let wishlistManager: WishlistManaging
     private var cancellables = Set<AnyCancellable>()
@@ -28,7 +28,7 @@ final class ProductListRowViewModel {
 }
 
 // MARK: - Bind
-private extension ProductListRowViewModel {
+private extension ProductListItemViewModel {
     func bind() {
         wishlistManager.wishlistIDsPublisher
             .map { [product] ids in ids.contains(product.id) }
@@ -41,7 +41,7 @@ private extension ProductListRowViewModel {
 }
 
 // MARK: - Interface
-extension ProductListRowViewModel {
+extension ProductListItemViewModel {
     func toggleWish() async {
         try? await wishlistManager.toggle(id: product.id)
     }
