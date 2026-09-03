@@ -10,7 +10,9 @@ import Foundation
 
 @MainActor
 @Observable
-final class ProductListItemViewModel {
+final class ProductListItemViewModel: Identifiable {
+    let id = UUID()
+    
     private let router: Routable
     private let wishlistManager: WishlistManaging
     private var cancellables = Set<AnyCancellable>()
