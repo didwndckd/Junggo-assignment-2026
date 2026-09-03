@@ -35,7 +35,14 @@ extension CompositionRoot {
     }
     
     private func createDetailView(for id: Int) -> some View {
-        Text("\(id)")
+        ProductDetailView(
+            viewModel: ProductDetailViewModel(
+                router: router,
+                repository: ProductDetailRepositoryImpl(),
+                wishlistManager: Self.wishlistManager,
+                productID: id
+            )
+        )
     }
 }
 
