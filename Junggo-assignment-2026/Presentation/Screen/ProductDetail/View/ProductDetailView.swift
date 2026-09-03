@@ -79,6 +79,8 @@ struct ProductDetailView: View {
         }
         .listStyle(.plain)
         .listSectionSpacing(0)
+        .listRowSpacing(0)
+        .environment(\.defaultMinListRowHeight, 0)
         .refreshable {
             refreshing = true
             await viewModel.load()
