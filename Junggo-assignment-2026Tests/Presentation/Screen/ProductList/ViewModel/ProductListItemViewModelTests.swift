@@ -1,7 +1,6 @@
 import Foundation
 import Testing
 @testable import Junggo_assignment_2026
-import Combine
 
 @MainActor
 struct ProductListItemViewModelTests {

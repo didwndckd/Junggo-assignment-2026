@@ -1,21 +1,20 @@
-import Combine
 import Foundation
 
 /// 찜 상태를 앱 전역에서 공유·관찰하기 위한 추상화. 구현체는 Presentation 레이어에 둔다.
 @MainActor
 protocol WishlistManaging: AnyObject {
-    /// 현재 찜한 상품 ID 집합을 구독할 수 있는 퍼블리셔. 구독 시점에 최신 상태를 즉시 방출한다.
-    var wishlistIDsPublisher: AnyPublisher<Set<Int>, Never> { get }
+    /// 상품의 현재 찜 여부를 반환한다.
+    func isWishlisted(id: Int) -> Bool
 
     /// 찜 상태를 토글한다. 찜한 상품이면 해제하고, 아니면 찜한다.
     func toggle(id: Int) async throws
 }
 
-@MainActor
+@MainActor @Observable
 final class WishlistManager: WishlistManaging {
     private let repository: WishlistRepository
 
-    @Published private(set) var wishlistIDs: Set<Int> = []
+    private var wishlistIDs: Set<Int> = []
     private var initialTask: Task<Void, Never>?
     
     init(repository: WishlistRepository) {
@@ -42,8 +41,8 @@ extension WishlistManager {
 // MARK: - Interface
 
 extension WishlistManager {
-    var wishlistIDsPublisher: AnyPublisher<Set<Int>, Never> {
-        $wishlistIDs.eraseToAnyPublisher()
+    func isWishlisted(id: Int) -> Bool {
+        wishlistIDs.contains(id)
     }
 
     func toggle(id: Int) async throws {

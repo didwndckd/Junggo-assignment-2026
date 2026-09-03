@@ -7,8 +7,7 @@
 
 import Foundation
 
-@MainActor
-@Observable
+@MainActor @Observable
 final class ProductListViewModel {
     private let router: Routable
     private let repository: ProductListRepository
