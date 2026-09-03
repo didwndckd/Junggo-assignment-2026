@@ -28,6 +28,7 @@ struct ProductInfoView: View {
 
             priceView
         }
+        .frame(maxWidth: .infinity, alignment: .leading)
     }
 
     private var priceView: some View {

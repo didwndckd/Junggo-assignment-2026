@@ -19,7 +19,7 @@ struct ProductListItemGridView: View {
             thumbnailView
             infoView
         }
-        .frame(maxWidth: .infinity, alignment: .leading)
+        .frame(maxHeight: .infinity, alignment: .top)
         .contentShape(Rectangle())
         .onTapGesture {
             viewModel.select()
