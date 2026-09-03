@@ -11,7 +11,7 @@ import SwiftUI
 struct Junggo_assignment_2026App: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            RootView()
         }
     }
 }
