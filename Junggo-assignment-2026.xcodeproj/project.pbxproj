@@ -14,19 +14,11 @@
 			remoteGlobalIDString = 31CF864730496E0600B7DD25;
 			remoteInfo = "Junggo-assignment-2026";
 		};
-		31CF866030496E0800B7DD25 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 31CF864030496E0600B7DD25 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 31CF864730496E0600B7DD25;
-			remoteInfo = "Junggo-assignment-2026";
-		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		31CF864830496E0600B7DD25 /* Junggo-assignment-2026.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Junggo-assignment-2026.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		31CF865530496E0800B7DD25 /* Junggo-assignment-2026Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Junggo-assignment-2026Tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
-		31CF865F30496E0800B7DD25 /* Junggo-assignment-2026UITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Junggo-assignment-2026UITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -38,11 +30,6 @@
 		31CF865830496E0800B7DD25 /* Junggo-assignment-2026Tests */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			path = "Junggo-assignment-2026Tests";
-			sourceTree = "<group>";
-		};
-		31CF866230496E0800B7DD25 /* Junggo-assignment-2026UITests */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			path = "Junggo-assignment-2026UITests";
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
@@ -62,13 +49,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		31CF865C30496E0800B7DD25 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -77,7 +57,6 @@
 			children = (
 				31CF864A30496E0600B7DD25 /* Junggo-assignment-2026 */,
 				31CF865830496E0800B7DD25 /* Junggo-assignment-2026Tests */,
-				31CF866230496E0800B7DD25 /* Junggo-assignment-2026UITests */,
 				31CF864930496E0600B7DD25 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -87,7 +66,6 @@
 			children = (
 				31CF864830496E0600B7DD25 /* Junggo-assignment-2026.app */,
 				31CF865530496E0800B7DD25 /* Junggo-assignment-2026Tests.xctest */,
-				31CF865F30496E0800B7DD25 /* Junggo-assignment-2026UITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -140,29 +118,6 @@
 			productReference = 31CF865530496E0800B7DD25 /* Junggo-assignment-2026Tests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
-		31CF865E30496E0800B7DD25 /* Junggo-assignment-2026UITests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 31CF866F30496E0800B7DD25 /* Build configuration list for PBXNativeTarget "Junggo-assignment-2026UITests" */;
-			buildPhases = (
-				31CF865B30496E0800B7DD25 /* Sources */,
-				31CF865C30496E0800B7DD25 /* Frameworks */,
-				31CF865D30496E0800B7DD25 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				31CF866130496E0800B7DD25 /* PBXTargetDependency */,
-			);
-			fileSystemSynchronizedGroups = (
-				31CF866230496E0800B7DD25 /* Junggo-assignment-2026UITests */,
-			);
-			name = "Junggo-assignment-2026UITests";
-			packageProductDependencies = (
-			);
-			productName = "Junggo-assignment-2026UITests";
-			productReference = 31CF865F30496E0800B7DD25 /* Junggo-assignment-2026UITests.xctest */;
-			productType = "com.apple.product-type.bundle.ui-testing";
-		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -177,10 +132,6 @@
 						CreatedOnToolsVersion = 26.5;
 					};
 					31CF865430496E0800B7DD25 = {
-						CreatedOnToolsVersion = 26.5;
-						TestTargetID = 31CF864730496E0600B7DD25;
-					};
-					31CF865E30496E0800B7DD25 = {
 						CreatedOnToolsVersion = 26.5;
 						TestTargetID = 31CF864730496E0600B7DD25;
 					};
@@ -202,7 +153,6 @@
 			targets = (
 				31CF864730496E0600B7DD25 /* Junggo-assignment-2026 */,
 				31CF865430496E0800B7DD25 /* Junggo-assignment-2026Tests */,
-				31CF865E30496E0800B7DD25 /* Junggo-assignment-2026UITests */,
 			);
 		};
 /* End PBXProject section */
@@ -216,13 +166,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		31CF865330496E0800B7DD25 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		31CF865D30496E0800B7DD25 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -246,13 +189,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		31CF865B30496E0800B7DD25 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -260,11 +196,6 @@
 			isa = PBXTargetDependency;
 			target = 31CF864730496E0600B7DD25 /* Junggo-assignment-2026 */;
 			targetProxy = 31CF865630496E0800B7DD25 /* PBXContainerItemProxy */;
-		};
-		31CF866130496E0800B7DD25 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 31CF864730496E0600B7DD25 /* Junggo-assignment-2026 */;
-			targetProxy = 31CF866030496E0800B7DD25 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -498,46 +429,6 @@
 			};
 			name = Release;
 		};
-		31CF867030496E0800B7DD25 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 3S767N4AG9;
-				GENERATE_INFOPLIST_FILE = YES;
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.didwndckd.Junggo-assignment-2026UITests";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				STRING_CATALOG_GENERATE_SYMBOLS = NO;
-				SWIFT_APPROACHABLE_CONCURRENCY = YES;
-				SWIFT_EMIT_LOC_STRINGS = NO;
-				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_TARGET_NAME = "Junggo-assignment-2026";
-			};
-			name = Debug;
-		};
-		31CF867130496E0800B7DD25 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 3S767N4AG9;
-				GENERATE_INFOPLIST_FILE = YES;
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.didwndckd.Junggo-assignment-2026UITests";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				STRING_CATALOG_GENERATE_SYMBOLS = NO;
-				SWIFT_APPROACHABLE_CONCURRENCY = YES;
-				SWIFT_EMIT_LOC_STRINGS = NO;
-				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_TARGET_NAME = "Junggo-assignment-2026";
-			};
-			name = Release;
-		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -564,15 +455,6 @@
 			buildConfigurations = (
 				31CF866D30496E0800B7DD25 /* Debug */,
 				31CF866E30496E0800B7DD25 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		31CF866F30496E0800B7DD25 /* Build configuration list for PBXNativeTarget "Junggo-assignment-2026UITests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				31CF867030496E0800B7DD25 /* Debug */,
-				31CF867130496E0800B7DD25 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
