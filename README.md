@@ -62,7 +62,7 @@ graph TD
 > 의존성을 조립하고 앱 진입점을 구성합니다. `CompositionRoot`는 앱 실행 경로에서 `Domain`의 Repository 프로토콜에 `Data` 구현체를 연결해 `Presentation`에 주입합니다.
 
 - `CompositionRoot`: Repository·Manager·ViewModel 등 의존성을 조립하고 주입하는 DI 루트.
-- `RootView`: `NavigationStack`으로 `Router`의 경로를 구독해 화면 전환을 렌더링하는 앱 진입 화면.
+- `RootView`: `NavigationStack`으로 `Router`의 경로를 관찰해 화면 전환을 렌더링하는 앱 진입 화면.
 
 **Presentation**
 
@@ -70,9 +70,9 @@ graph TD
 > 화면 상태를 만들고 사용자 입력을 처리합니다. `ViewModel`은 `Repository`/`Manager`를 구체 타입이 아닌 프로토콜로 주입받으므로 `Data`의 구현을 직접 알지 못합니다.
 
 - `ProductListViewModel`: 상품 목록을 조회하고 로딩/빈 상태/에러 상태를 관리.
-- `ProductListItemViewModel`: 목록 셀 하나의 상태(찜 여부 구독)와 선택·찜 토글 액션을 담당.
-- `ProductDetailViewModel`: 단일 상품 상세를 조회하고 찜 여부 구독·토글을 담당.
-- `WishlistManager`: 찜 상태를 앱 전역에서 공유하고 `Combine` Publisher로 관찰 가능하게 제공.
+- `ProductListItemViewModel`: 목록 셀 하나의 상태(찜 여부 확인)와 선택·찜 토글 액션을 담당.
+- `ProductDetailViewModel`: 단일 상품 상세를 조회하고 찜 여부 확인·토글을 담당.
+- `WishlistManager`: 찜 상태를 앱 전역에서 공유하고 Observation으로 관찰 가능하게 제공.
 - `Router`: 화면 push/pop 등 네비게이션 스택 전환을 담당.
 
 **Domain**
@@ -116,13 +116,13 @@ flowchart LR
     Domain --> ViewModel["Presentation<br/>ViewModel · WishlistManager"]
     ViewModel --> View["SwiftUI View"]
 
-    WishlistManager -->|Publisher| ViewModel
+    WishlistManager -->|Observation| ViewModel
     ViewModel -->|Route| Router
     Router --> RootView["RootView<br/>NavigationStack"]
 ```
 
 - **상품 조회**: View의 `.task`에서 `ViewModel.load()`를 호출하면, ViewModel이 Repository 프로토콜을 통해 데이터를 요청합니다. Data 레이어는 API 응답을 Domain 모델로 변환해 반환하고, ViewModel은 결과를 `loaded`·`empty`·`error` 상태로 갱신합니다. SwiftUI View는 `@Observable` ViewModel의 상태 변화를 관찰해 로딩·목록·빈 화면·에러 화면을 렌더링합니다.
-- **찜 상태**: `WishlistManager`는 `UserDefaults` 기반 Repository에서 찜한 상품 ID를 불러오고 `Publisher`로 상태를 발행합니다. 목록 아이템과 상세 ViewModel은 이를 구독해 같은 상품의 찜 여부를 동시에 갱신합니다. 사용자의 토글 입력은 Manager를 거쳐 저장소에 반영됩니다.
+- **찜 상태**: `WishlistManager`는 `UserDefaults` 기반 Repository에서 찜한 상품 ID를 불러와 Observation으로 관리합니다. 목록 아이템과 상세 ViewModel은 상품별 찜 여부를 조회해 같은 상태를 표시합니다. 사용자의 토글 입력은 Manager를 거쳐 저장소에 반영됩니다.
 - **화면 전환**: 목록 아이템 선택 시 ViewModel이 `Router`에 상세 경로를 추가합니다. `RootView`의 `NavigationStack`이 `Router.path` 변화를 관찰해 상세 화면을 생성하며, `CompositionRoot`가 해당 화면에 필요한 의존성을 조립합니다.
 - **동시 요청 처리**: 목록·상세 조회는 이전 요청을 취소하고 마지막 요청의 결과만 반영해, 늦게 도착한 이전 응답이 최신 화면 상태를 덮어쓰지 않도록 했습니다.
 
@@ -146,9 +146,9 @@ flowchart LR
 
 #### 상품 목록 아이템 ViewModel 분리
 
-찜 상태의 원본과 저장 책임은 `WishlistManager`에 두고, `ProductListItemViewModel`은 개별 상품의 찜 여부를 구독해 표시 상태로 변환하도록 분리했습니다. 목록 ViewModel은 상품 목록 조회와 화면 상태에 집중하고, 아이템 ViewModel은 찜 상태 표시·토글·상세 이동처럼 셀 단위의 사용자 인터랙션을 담당합니다.
+찜 상태의 원본과 저장 책임은 `WishlistManager`에 두고, `ProductListItemViewModel`은 개별 상품의 찜 여부를 조회해 표시 상태로 변환하도록 분리했습니다. 목록 ViewModel은 상품 목록 조회와 화면 상태에 집중하고, 아이템 ViewModel은 찜 상태 표시·토글·상세 이동처럼 셀 단위의 사용자 인터랙션을 담당합니다.
 
-찜 상태가 변경되어도 목록 데이터를 다시 구성하지 않습니다. 각 아이템 ViewModel은 자신의 상품 ID에 해당하는 `isWished`만 갱신하며, 목록과 상세 화면은 같은 `WishlistManager`를 구독해 일관된 찜 상태를 표시합니다.
+찜 상태가 변경되어도 목록 데이터를 다시 구성하지 않습니다. 각 아이템 ViewModel은 자신의 상품 ID로 `isWished`를 계산하며, 목록과 상세 화면은 같은 `WishlistManager`를 참조해 일관된 찜 상태를 표시합니다.
 
 또한 아이템 ViewModel은 `WishlistManaging` 프로토콜을 주입받으므로, 목록 조회나 화면 구성 없이 찜 상태 변화와 사용자 액션을 독립적으로 테스트할 수 있습니다. 고유한 UUID를 식별자로 사용해 예외적으로 중복된 상품 ID가 전달되어도 목록 항목을 구분합니다.
 
