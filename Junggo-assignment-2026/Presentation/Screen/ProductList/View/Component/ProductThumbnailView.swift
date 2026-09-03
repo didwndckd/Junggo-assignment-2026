@@ -29,7 +29,7 @@ struct ProductThumbnailView: View {
                 placeholder
             }
         }
-        .aspectRatio(1, contentMode: .fill)
+        .aspectRatio(1, contentMode: .fit)
         .clipShape(RoundedRectangle(cornerRadius: 8))
         .overlay {
             RoundedRectangle(cornerRadius: 8)
@@ -48,3 +48,23 @@ private extension ProductThumbnailView {
             }
     }
 }
+
+#if DEBUG
+#Preview {
+    HStack(alignment: .top, spacing: 12) {
+        ProductThumbnailView(
+            url: URL(string: "https://cdn.dummyjson.com/product-images/beauty/essence-mascara-lash-princess/thumbnail.webp")
+        )
+        .frame(width: 80)
+
+        ProductThumbnailView(url: nil)
+            .frame(width: 80)
+
+        ProductThumbnailView(
+            url: URL(string: "https://cdn.dummyjson.com/product-images/beauty/essence-mascara-lash-princess/thumbnail.webp")
+        )
+        .frame(maxWidth: .infinity)
+    }
+    .padding()
+}
+#endif
