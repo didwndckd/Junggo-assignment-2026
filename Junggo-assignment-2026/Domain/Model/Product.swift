@@ -7,12 +7,10 @@ struct Product: Hashable, Sendable {
     let id: Int
     /// 상품명
     let title: String
-    /// 정가
-    let price: Double
+    /// 가격 정보 (정가, 할인율, 할인된 금액)
+    let price: ProductPrice
     /// 썸네일 이미지 URL
     let thumbnail: URL
-    /// 할인율(%)
-    let discountPercentage: Double
     /// 평균 평점 (0~5)
     let rating: Double
     /// 재고 상태 (재고 있음/부족/없음)

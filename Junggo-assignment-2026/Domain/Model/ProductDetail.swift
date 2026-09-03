@@ -11,10 +11,8 @@ struct ProductDetail: Hashable, Sendable {
     let description: String
     /// 카테고리 (예: beauty, fragrances, furniture, groceries)
     let category: String
-    /// 정가
-    let price: Double
-    /// 할인율(%)
-    let discountPercentage: Double
+    /// 가격 정보 (정가, 할인율, 할인된 금액)
+    let price: ProductPrice
     /// 평균 평점 (0~5)
     let rating: Double
     /// 재고 수량

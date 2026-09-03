@@ -75,9 +75,8 @@ extension ProductListEndpoint.ProductDTO: Decodable {
         return Product(
             id: id,
             title: title,
-            price: price,
+            price: ProductPrice(originalPrice: price, discountPercentage: discountPercentage),
             thumbnail: thumbnailURL,
-            discountPercentage: discountPercentage,
             rating: rating,
             availabilityStatus: status,
             brand: brand
