@@ -5,11 +5,9 @@
 //  Created by yjc on 9/4/26.
 //
 
-import Combine
 import Foundation
 
-@MainActor
-@Observable
+@MainActor @Observable
 final class ProductDetailViewModel {
     private let router: Routable
     private let repository: ProductDetailRepository
@@ -17,17 +15,13 @@ final class ProductDetailViewModel {
     private let productID: Int
 
     private(set) var state = State.initial
-    private(set) var isWished = false
     private var loadTask: Task<ProductDetail, Error>?
-    private var cancellables = Set<AnyCancellable>()
 
     init(router: Routable, repository: ProductDetailRepository, wishlistManager: WishlistManaging, productID: Int) {
         self.router = router
         self.repository = repository
         self.wishlistManager = wishlistManager
         self.productID = productID
-
-        bind()
     }
 }
 
@@ -37,19 +31,6 @@ extension ProductDetailViewModel {
         case initial
         case loaded(ProductDetail)
         case error
-    }
-}
-
-// MARK: - Bind
-private extension ProductDetailViewModel {
-    func bind() {
-        wishlistManager.wishlistIDsPublisher
-            .map { [productID] ids in ids.contains(productID) }
-            .removeDuplicates()
-            .sink { [weak self] isWished in
-                self?.isWished = isWished
-            }
-            .store(in: &cancellables)
     }
 }
 
@@ -67,7 +48,7 @@ extension ProductDetailViewModel {
     var isLoading: Bool {
         loadTask != nil
     }
-    
+
     var title: String {
         switch state {
         case .loaded(let product):
@@ -75,6 +56,10 @@ extension ProductDetailViewModel {
         default:
             return ""
         }
+    }
+
+    var isWished: Bool {
+        wishlistManager.isWishlisted(id: productID)
     }
 
     /// 이전 load Task는 취소하고 마지막 호출의 Task만 유효하게 반영한다.

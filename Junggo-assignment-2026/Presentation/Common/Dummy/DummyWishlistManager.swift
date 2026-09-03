@@ -6,30 +6,27 @@
 //
 
 #if DEBUG
-import Combine
 import Foundation
 
 /// Preview 전용 더미. 실제 저장소 없이 메모리에서만 찜 상태를 토글한다.
-@MainActor
+@MainActor @Observable
 final class DummyWishlistManager: WishlistManaging {
-    private let subject: CurrentValueSubject<Set<Int>, Never>
+    private var wishlistIDs: Set<Int>
 
     init(wishedIDs: Set<Int> = []) {
-        subject = CurrentValueSubject(wishedIDs)
+        self.wishlistIDs = wishedIDs
     }
 
-    var wishlistIDsPublisher: AnyPublisher<Set<Int>, Never> {
-        subject.eraseToAnyPublisher()
+    func isWishlisted(id: Int) -> Bool {
+        wishlistIDs.contains(id)
     }
 
     func toggle(id: Int) async throws {
-        var ids = subject.value
-        if ids.contains(id) {
-            ids.remove(id)
+        if wishlistIDs.contains(id) {
+            wishlistIDs.remove(id)
         } else {
-            ids.insert(id)
+            wishlistIDs.insert(id)
         }
-        subject.send(ids)
     }
 }
 #endif
