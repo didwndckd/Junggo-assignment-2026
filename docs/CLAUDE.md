@@ -15,6 +15,7 @@
 - Presentation: `Junggo-assignment-2026/Presentation`
 - Domain: `Junggo-assignment-2026/Domain`
 - Data: `Junggo-assignment-2026/Data`
+- Common: `Junggo-assignment-2026/Common`
 
 ```
 Presentation/
@@ -29,9 +30,13 @@ Data/
 ├── Network/
 ├── Repository/
 └── Endpoint/
+Common/
+└── DateFormatter/
 ```
 
 의존 방향: `Presentation → Domain ← Data`
+
+`Common`은 특정 레이어에 속하지 않고 여러 레이어에서 공유하는 유틸리티(날짜 포매터 등)를 모아둔다. 모든 레이어에서 참조할 수 있다.
 
 ## Git 워크플로
 
