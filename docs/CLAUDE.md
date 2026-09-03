@@ -32,3 +32,8 @@ Data/
 ```
 
 의존 방향: `Presentation → Domain ← Data`
+
+## Git 워크플로
+
+- 브랜치 머지 시 fast-forward를 사용하지 않고 항상 `--no-ff`로 머지해 브랜치 이력을 보존한다.
+  - 예: `git merge --no-ff <브랜치명>`
