@@ -5,7 +5,7 @@ import Combine
 
 @MainActor
 struct ProductDetailViewModelTests {
-    @Test("load는 조회한 상품으로 product를 구성하고 state를 loaded로 전환한다")
+    @Test("load는 조회한 상품으로 state를 loaded로 전환한다")
     func loadSuccess() async throws {
         let product = ProductFactory.makeDetail(id: 1)
         let repository = MockProductDetailRepository(results: [.success(product)])
@@ -13,8 +13,7 @@ struct ProductDetailViewModelTests {
 
         await sut.load()
 
-        #expect(sut.state == .loaded)
-        #expect(sut.product == product)
+        #expect(sut.state == .loaded(product))
     }
 
     @Test("load는 조회에 실패하면 state를 error로 전환한다")
@@ -25,7 +24,27 @@ struct ProductDetailViewModelTests {
         await sut.load()
 
         #expect(sut.state == .error)
-        #expect(sut.product == nil)
+    }
+
+    @Test("title은 state가 loaded면 상품 제목을 반환한다")
+    func titleReflectsLoadedProduct() async throws {
+        let product = ProductFactory.makeDetail(id: 1)
+        let repository = MockProductDetailRepository(results: [.success(product)])
+        let sut = makeSUT(repository: repository)
+
+        await sut.load()
+
+        #expect(sut.title == product.title)
+    }
+
+    @Test("title은 state가 loaded가 아니면 빈 문자열을 반환한다")
+    func titleEmptyWhenNotLoaded() async throws {
+        let repository = MockProductDetailRepository(results: [.failure(MockProductDetailRepository.NotStubbed())])
+        let sut = makeSUT(repository: repository)
+
+        await sut.load()
+
+        #expect(sut.title == "")
     }
 
     @Test("toggleWish는 찜하지 않은 상품이면 찜 상태로 전환한다")

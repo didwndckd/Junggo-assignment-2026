@@ -17,7 +17,6 @@ final class ProductDetailViewModel {
     private let productID: Int
 
     private(set) var state = State.initial
-    private(set) var product: ProductDetail?
     private(set) var isWished = false
     private var loadTask: Task<ProductDetail, Error>?
     private var cancellables = Set<AnyCancellable>()
@@ -36,7 +35,7 @@ final class ProductDetailViewModel {
 extension ProductDetailViewModel {
     enum State: Equatable {
         case initial
-        case loaded
+        case loaded(ProductDetail)
         case error
     }
 }
@@ -68,6 +67,15 @@ extension ProductDetailViewModel {
     var isLoading: Bool {
         loadTask != nil
     }
+    
+    var title: String {
+        switch state {
+        case .loaded(let product):
+            return product.title
+        default:
+            return ""
+        }
+    }
 
     /// 이전 load Task는 취소하고 마지막 호출의 Task만 유효하게 반영한다.
     func load() async {
@@ -81,8 +89,7 @@ extension ProductDetailViewModel {
 
         switch result {
         case .success(let product):
-            self.product = product
-            state = .loaded
+            state = .loaded(product)
         case .failure:
             state = .error
         }
