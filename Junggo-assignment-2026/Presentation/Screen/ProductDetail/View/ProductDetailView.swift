@@ -49,36 +49,36 @@ struct ProductDetailView: View {
 
     @ViewBuilder
     private func content(_ product: ProductDetail) -> some View {
-        ScrollView {
-            VStack(alignment: .leading, spacing: 24) {
-                if !product.images.isEmpty {
-                    imageCarousel(product.images)
-                }
-
-                headerSection(product)
-                priceSection(product)
-
-                if !product.description.isEmpty {
-                    sectionView(title: "상세 설명") {
-                        Text(product.description)
-                            .font(.subheadline)
-                            .foregroundStyle(.secondary)
-                    }
-                }
-
-                detailInfoSection(product)
-                policySection(product)
-
-                if !product.tags.isEmpty {
-                    tagsSection(product.tags)
-                }
-
-                if !product.reviews.isEmpty {
-                    reviewsSection(product.reviews)
-                }
+        List {
+            if !product.images.isEmpty {
+                imageCarousel(product.images)
+                    .listRowInsets(EdgeInsets())
+                    .listRowSeparator(.hidden)
             }
-            .padding(16)
+
+            headerSection(product)
+                .listRowSeparator(.hidden)
+
+            priceSection(product)
+                .listRowSeparator(.hidden)
+
+            if !product.description.isEmpty {
+                descriptionSection(product)
+            }
+
+            detailInfoSection(product)
+            policySection(product)
+
+            if !product.tags.isEmpty {
+                tagsSection(product.tags)
+            }
+
+            if !product.reviews.isEmpty {
+                reviewsSection(product.reviews)
+            }
         }
+        .listStyle(.plain)
+        .listSectionSpacing(0)
         .refreshable {
             refreshing = true
             await viewModel.load()
@@ -162,6 +162,7 @@ private extension ProductDetailView {
             }
         }
         .tabViewStyle(.page)
+        .indexViewStyle(.page(backgroundDisplayMode: .always))
         .aspectRatio(1, contentMode: .fit)
         .frame(maxWidth: .infinity)
         .clipShape(RoundedRectangle(cornerRadius: 12))
@@ -201,16 +202,17 @@ private extension ProductDetailView {
 
 // MARK: - Sections
 private extension ProductDetailView {
-    func sectionView<Content: View>(title: String, @ViewBuilder content: () -> Content) -> some View {
-        VStack(alignment: .leading, spacing: 8) {
-            Text(title)
-                .font(.headline)
-            content()
+    func descriptionSection(_ product: ProductDetail) -> some View {
+        Section("상세 설명") {
+            Text(product.description)
+                .font(.subheadline)
+                .foregroundStyle(.secondary)
+                .listRowSeparator(.hidden)
         }
     }
 
     func detailInfoSection(_ product: ProductDetail) -> some View {
-        sectionView(title: "상품 정보") {
+        Section("상품 정보") {
             VStack(alignment: .leading, spacing: 6) {
                 infoRow("카테고리", product.category)
                 infoRow("SKU", product.sku)
@@ -222,6 +224,8 @@ private extension ProductDetailView {
                 infoRow("최소 주문 수량", "\(product.minimumOrderQuantity)개")
                 infoRow("재고", "\(product.stock)개")
             }
+            .padding(.vertical, 4)
+            .listRowSeparator(.hidden)
         }
     }
 
@@ -240,7 +244,7 @@ private extension ProductDetailView {
     }
 
     func policySection(_ product: ProductDetail) -> some View {
-        sectionView(title: "배송 및 보증") {
+        Section("배송 및 보증") {
             VStack(alignment: .leading, spacing: 6) {
                 Label(product.shippingInformation, systemImage: "shippingbox")
                 Label(product.warrantyInformation, systemImage: "checkmark.shield")
@@ -248,11 +252,13 @@ private extension ProductDetailView {
             }
             .font(.caption)
             .foregroundStyle(.secondary)
+            .padding(.vertical, 4)
+            .listRowSeparator(.hidden)
         }
     }
 
     func tagsSection(_ tags: [String]) -> some View {
-        sectionView(title: "태그") {
+        Section("태그") {
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack(spacing: 8) {
                     ForEach(tags, id: \.self) { tag in
@@ -264,15 +270,15 @@ private extension ProductDetailView {
                     }
                 }
             }
+            .listRowSeparator(.hidden)
         }
     }
 
     func reviewsSection(_ reviews: [Review]) -> some View {
-        sectionView(title: "리뷰 (\(reviews.count))") {
-            VStack(spacing: 8) {
-                ForEach(Array(reviews.enumerated()), id: \.offset) { _, review in
-                    reviewRow(review)
-                }
+        Section("리뷰 (\(reviews.count))") {
+            ForEach(reviews, id: \.self) { review in
+                reviewRow(review)
+                    .listRowSeparator(.hidden)
             }
         }
     }
@@ -297,9 +303,7 @@ private extension ProductDetailView {
                 .font(.caption2)
                 .foregroundStyle(.secondary)
         }
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .padding(12)
-        .background(.quaternary.opacity(0.3), in: RoundedRectangle(cornerRadius: 8))
+        .padding(.vertical, 4)
     }
 }
 
