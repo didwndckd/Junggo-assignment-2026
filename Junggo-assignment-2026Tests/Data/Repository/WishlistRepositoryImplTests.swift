@@ -12,57 +12,59 @@ struct WishlistRepositoryImplTests {
         }
     }
 
-    @Test("add는 상품 ID를 찜 목록에 추가한다")
+    @Test("add는 상품 ID를 찜 목록에 추가하고 갱신된 목록을 반환한다")
     func addNew() async throws {
         try await Self.withRepository { repository in
-            try await repository.add(productID: 1)
+            let ids = try await repository.add(productID: 1)
 
+            #expect(ids == [1])
             #expect(try await repository.fetchWishlistProductIDs() == [1])
         }
     }
 
-    @Test("add는 이미 찜한 상품이면 중복 추가하지 않는다")
+    @Test("add는 이미 찜한 상품이면 중복 추가하지 않고 기존 목록을 반환한다")
     func addDuplicate() async throws {
         try await Self.withRepository { repository in
             try await repository.add(productID: 1)
 
-            try await repository.add(productID: 1)
+            let ids = try await repository.add(productID: 1)
 
-            #expect(try await repository.fetchWishlistProductIDs() == [1])
+            #expect(ids == [1])
         }
     }
 
-    @Test("add는 찜한 순서를 보존한다")
+    @Test("add는 찜한 순서를 보존한 목록을 반환한다")
     func addPreservesOrder() async throws {
         try await Self.withRepository { repository in
             try await repository.add(productID: 3)
             try await repository.add(productID: 1)
-            try await repository.add(productID: 2)
 
-            #expect(try await repository.fetchWishlistProductIDs() == [3, 1, 2])
+            let ids = try await repository.add(productID: 2)
+
+            #expect(ids == [3, 1, 2])
         }
     }
 
-    @Test("remove는 상품 ID를 찜 목록에서 제거한다")
+    @Test("remove는 상품 ID를 찜 목록에서 제거하고 갱신된 목록을 반환한다")
     func removeExisting() async throws {
         try await Self.withRepository { repository in
             try await repository.add(productID: 1)
             try await repository.add(productID: 2)
 
-            try await repository.remove(productID: 1)
+            let ids = try await repository.remove(productID: 1)
 
-            #expect(try await repository.fetchWishlistProductIDs() == [2])
+            #expect(ids == [2])
         }
     }
 
-    @Test("remove는 찜하지 않은 상품이면 아무 동작도 하지 않는다")
+    @Test("remove는 찜하지 않은 상품이면 아무 동작도 하지 않고 기존 목록을 반환한다")
     func removeMissing() async throws {
         try await Self.withRepository { repository in
             try await repository.add(productID: 1)
 
-            try await repository.remove(productID: 999)
+            let ids = try await repository.remove(productID: 999)
 
-            #expect(try await repository.fetchWishlistProductIDs() == [1])
+            #expect(ids == [1])
         }
     }
 }

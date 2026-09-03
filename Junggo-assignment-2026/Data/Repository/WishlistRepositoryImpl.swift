@@ -9,18 +9,22 @@ actor WishlistRepositoryImpl: WishlistRepository {
         self.storageKey = storageKey
     }
 
-    func add(productID: Int) async throws {
+    @discardableResult
+    func add(productID: Int) async throws -> [Int] {
         var ids = storedIDs()
-        guard !ids.contains(productID) else { return }
+        guard !ids.contains(productID) else { return ids }
         ids.append(productID)
         persist(ids)
+        return ids
     }
 
-    func remove(productID: Int) async throws {
+    @discardableResult
+    func remove(productID: Int) async throws -> [Int] {
         var ids = storedIDs()
-        guard let index = ids.firstIndex(of: productID) else { return }
+        guard let index = ids.firstIndex(of: productID) else { return ids }
         ids.remove(at: index)
         persist(ids)
+        return ids
     }
 
     func fetchWishlistProductIDs() async throws -> [Int] {
