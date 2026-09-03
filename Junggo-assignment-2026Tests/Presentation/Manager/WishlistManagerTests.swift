@@ -1,4 +1,3 @@
-import Combine
 import Foundation
 import Testing
 @testable import Junggo_assignment_2026
@@ -10,9 +9,11 @@ struct WishlistManagerTests {
         let repository = MockWishlistRepository(productIDs: [1, 2])
         let manager = WishlistManager(repository: repository)
 
-        let ids = await manager.wishlistIDsPublisher.values.first { $0 == [1, 2] }
+        try await manager.toggle(id: 3)
 
-        #expect(ids == [1, 2])
+        #expect(manager.isWishlisted(id: 1))
+        #expect(manager.isWishlisted(id: 2))
+        #expect(manager.isWishlisted(id: 3))
     }
 
     @Test("toggle은 찜하지 않은 상품이면 추가한다")
@@ -22,7 +23,7 @@ struct WishlistManagerTests {
 
         try await manager.toggle(id: 1)
 
-        #expect(manager.wishlistIDs == [1])
+        #expect(manager.isWishlisted(id: 1))
     }
 
     @Test("toggle은 이미 찜한 상품이면 제거한다")
@@ -32,20 +33,6 @@ struct WishlistManagerTests {
 
         try await manager.toggle(id: 1)
 
-        #expect(manager.wishlistIDs.isEmpty)
-    }
-
-    @Test("wishlistIDsPublisher는 wishlistIDs 변경을 방출한다")
-    func publisherEmitsChanges() async throws {
-        let repository = MockWishlistRepository()
-        let manager = WishlistManager(repository: repository)
-
-        var received: [Set<Int>] = []
-        let cancellable = manager.wishlistIDsPublisher.sink { received.append($0) }
-
-        try await manager.toggle(id: 1)
-
-        cancellable.cancel()
-        #expect(received.last == [1])
+        #expect(!manager.isWishlisted(id: 1))
     }
 }
